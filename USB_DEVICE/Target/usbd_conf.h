@@ -95,10 +95,10 @@
 /* Memory management macros */
 
 /** Alias for memory allocation. */
-#define USBD_malloc         malloc
+#define USBD_malloc         _usb_malloc
 
 /** Alias for memory release. */
-#define USBD_free           free
+#define USBD_free           _usb_free
 
 /** Alias for memory set. */
 #define USBD_memset         memset
@@ -154,7 +154,8 @@
   */
 
 /* Exported functions -------------------------------------------------------*/
-
+void *_usb_malloc(size_t len);
+void _usb_free(void *);
 /**
   * @}
   */

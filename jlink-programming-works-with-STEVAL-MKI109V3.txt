@@ -1,0 +1,188 @@
+SEGGER J-Link Commander V6.46i (Compiled Jul  5 2019 16:57:43)
+DLL version V6.46i, compiled Jul  5 2019 16:53:57
+
+Connecting to J-Link via USB...O.K.
+Firmware: J-Link V10 compiled Jun 28 2019 16:27:24
+Hardware version: V10.10
+S/N: 260110800
+License(s): FlashBP, GDB
+OEM: SEGGER-EDU
+VTref=3.625V
+
+
+Type "connect" to establish a target connection, '?' for help
+J-Link>connect
+Please specify device / core. <Default>: STM32F401VE
+Type '?' for selection dialog
+Device>
+Please specify target interface:
+  J) JTAG (Default)
+  S) SWD
+  T) cJTAG
+TIF>s
+Specify target interface speed [kHz]. <Default>: 4000 kHz
+Speed>
+Device "STM32F401VE" selected.
+
+
+Connecting to target via SWD
+Found SW-DP with ID 0x2BA01477
+Found SW-DP with ID 0x2BA01477
+Scanning AP map to find all available APs
+AP[1]: Stopped AP scan as end of AP map has been reached
+AP[0]: AHB-AP (IDR: 0x24770011)
+Iterating through AP map to find AHB-AP to use
+AP[0]: Core found
+AP[0]: AHB-AP ROM base: 0xE00FF000
+CPUID register: 0x410FC241. Implementer code: 0x41 (ARM)
+Found Cortex-M4 r0p1, Little endian.
+FPUnit: 6 code (BP) slots and 2 literal slots
+CoreSight components:
+ROMTbl[0] @ E00FF000
+ROMTbl[0][0]: E000E000, CID: B105E00D, PID: 000BB00C SCS-M7
+ROMTbl[0][1]: E0001000, CID: B105E00D, PID: 003BB002 DWT
+ROMTbl[0][2]: E0002000, CID: B105E00D, PID: 002BB003 FPB
+ROMTbl[0][3]: E0000000, CID: B105E00D, PID: 003BB001 ITM
+ROMTbl[0][4]: E0040000, CID: B105900D, PID: 000BB9A1 TPIU
+ROMTbl[0][5]: E0041000, CID: B105900D, PID: 000BB925 ETM
+Cortex-M4 identified.
+J-Link>erase
+Erasing device...
+J-Link: Flash download: Total time needed: 8.275s (Prepare: 0.028s, Compare: 0.000s, Erase: 8.244s, Program: 0.000s, Verify: 0.000s, Restore: 0.002s)
+Erasing done.
+J-Link>loadbin C:\temp\HIDKeyboard.bin, 0x8000000
+Downloading file [C:\temp\HIDKeyboard.bin]...
+J-Link: Flash download: Bank 0 @ 0x08000000: 1 range affected (16384 bytes)
+J-Link: Flash download: Total time needed: 0.130s (Prepare: 0.029s, Compare: 0.001s, Erase: 0.000s, Program: 0.084s, Verify: 0.000s, Restore: 0.013s)
+O.K.
+J-Link>r
+Reset delay: 0 ms
+Reset type NORMAL: Resets core & peripherals via SYSRESETREQ & VECTRESET bit.
+Reset: Halt core after reset via DEMCR.VC_CORERESET.
+Reset: Reset device via AIRCR.SYSRESETREQ.
+J-Link>g
+J-Link>mem32 0x8000000,1
+08000000 = 20018000
+J-Link>mem32 0x8000000,20
+08000000 = 20018000 080004D5 08000729 0800072B
+08000010 = 0800072D 0800072F 08000731 00000000
+08000020 = 00000000 00000000 00000000 08000733
+08000030 = 08000735 00000000 08000737 08000739
+08000040 = 08000525 08000525 08000525 08000525
+08000050 = 08000525 08000525 08000525 08000525
+08000060 = 08000525 08000525 08000525 08000525
+08000070 = 08000525 08000525 08000525 08000525
+J-Link>
+
+Also System Workbench works
+
+SEGGER J-Link GDB Server V6.46i Command Line Version
+
+JLinkARM.dll V6.46i (DLL compiled Jul  5 2019 16:53:57)
+
+Command line: -if swd -device Cortex-M4 -endian little -speed 4000 -port 2331 -swoport 2332 -telnetport 2333 -vd -ir -localhostonly 1 -singlerun -strict -timeout 0 -nogui
+-----GDB Server start settings-----
+GDBInit file:                  none
+GDB Server Listening port:     2331
+SWO raw output listening port: 2332
+Terminal I/O port:             2333
+Accept remote connection:      localhost only
+Generate logfile:              off
+Verify download:               on
+Init regs on start:            on
+Silent mode:                   off
+Single run mode:               on
+Target connection timeout:     0 ms
+------J-Link related settings------
+J-Link Host interface:         USB
+J-Link script:                 none
+J-Link settings file:          none
+------Target related settings------
+Target device:                 Cortex-M4
+Target interface:              SWD
+Target interface speed:        4000kHz
+Target endian:                 little
+
+Connecting to J-Link...
+J-Link is connected.
+Firmware: J-Link V10 compiled Jun 28 2019 16:27:24
+Hardware: V10.10
+S/N: 260110800
+OEM: SEGGER-EDU
+Feature(s): FlashBP, GDB
+Checking target voltage...
+Target voltage: 3.63 V
+Listening on TCP/IP port 2331
+Connecting to target...Connected to target
+Waiting for GDB connection...Connected to 127.0.0.1
+Reading all registers
+Read 4 bytes @ address 0x00000000 (Data = 0x20018000)
+Read 2 bytes @ address 0x00000000 (Data = 0x8000)
+Received monitor command: speed 1000
+Target interface speed set to 1000 kHz
+Received monitor command: clrbp
+Received monitor command: reset
+Resetting target
+Received monitor command: halt
+Halting target CPU...
+...Target halted (PC = 0x080004D4)
+Received monitor command: regs
+R0 = 00000000, R1 = 00000000, R2 = 00000000, R3 = 00000000
+R4 = 00000000, R5 = 00000000, R6 = 00000000, R7 = 00000000
+R8 = 00000000, R9 = 00000000, R10= 00000000, R11= 00000000
+R12= 00000000, R13= 20018000, MSP= 20018000, PSP= 00000000
+R14(LR) = FFFFFFFF, R15(PC) = 080004D4
+XPSR 01000000, APSR 00000000, EPSR 01000000, IPSR 00000000
+CFBP 00000000, CONTROL 00, FAULTMASK 00, BASEPRI 00, PRIMASK 00
+Reading all registers
+Read 4 bytes @ address 0x080004D4 (Data = 0xD034F8DF)
+Read 2 bytes @ address 0x080004D4 (Data = 0xF8DF)
+Received monitor command: speed auto
+Select auto target interface speed (2000 kHz)
+Received monitor command: flash breakpoints 1
+Flash breakpoints enabled
+Read 4 bytes @ address 0x080004D4 (Data = 0xD034F8DF)
+Downloading 404 bytes @ address 0x08000000 - Verified OK
+Downloading 4096 bytes @ address 0x08000194 - Verified OK
+Downloading 4096 bytes @ address 0x08001194 - Verified OK
+Downloading 4096 bytes @ address 0x08002194 - Verified OK
+Downloading 2696 bytes @ address 0x08003194 - Verified OK
+Downloading 80 bytes @ address 0x08003C1C - Verified OK
+Downloading 8 bytes @ address 0x08003C6C - Verified OK
+Downloading 4 bytes @ address 0x08003C74 - Verified OK
+Downloading 4 bytes @ address 0x08003C78 - Verified OK
+Downloading 588 bytes @ address 0x08003C7C - Verified OK
+Read 4 bytes @ address 0x080004D4 (Data = 0xD034F8DF)
+Read 2 bytes @ address 0x08000662 (Data = 0xF000)
+Read 2 bytes @ address 0x08000662 (Data = 0xF000)
+Received monitor command: clrbp
+Received monitor command: reset
+Resetting target
+Received monitor command: halt
+Halting target CPU...
+...Target halted (PC = 0x080004D4)
+Read 2 bytes @ address 0x08000662 (Data = 0xF000)
+Read 2 bytes @ address 0x08000662 (Data = 0xF000)
+Read 2 bytes @ address 0x08000662 (Data = 0xF000)
+Received monitor command: regs
+R0 = 00000000, R1 = 00000000, R2 = 00000000, R3 = 00000000
+R4 = 00000000, R5 = 00000000, R6 = 00000000, R7 = 00000000
+R8 = 00000000, R9 = 00000000, R10= 00000000, R11= 00000000
+R12= 00000000, R13= 20018000, MSP= 20018000, PSP= 00000000
+R14(LR) = FFFFFFFF, R15(PC) = 080004D4
+XPSR 01000000, APSR 00000000, EPSR 01000000, IPSR 00000000
+CFBP 00000000, CONTROL 00, FAULTMASK 00, BASEPRI 00, PRIMASK 00
+Reading all registers
+Read 4 bytes @ address 0x080004D4 (Data = 0xD034F8DF)
+Setting breakpoint @ address 0x08000662, Size = 2, BPHandle = 0x0001
+Starting target CPU...
+...Breakpoint reached @ address 0x08000662
+Reading all registers
+Read 4 bytes @ address 0x08000662 (Data = 0xFAC9F000)
+Removing breakpoint @ address 0x08000662, Size = 2
+Reading 64 bytes @ address 0x08000640
+Reading 64 bytes @ address 0x08000680
+Reading 64 bytes @ address 0x080006C0
+Reading 64 bytes @ address 0x08000700
+
+

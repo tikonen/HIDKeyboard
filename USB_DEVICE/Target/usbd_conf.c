@@ -24,6 +24,7 @@
 #include "stm32f4xx_hal.h"
 #include "usbd_def.h"
 #include "usbd_core.h"
+#include "usbd_hid.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -57,7 +58,14 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status);
 /* Private functions ---------------------------------------------------------*/
 
 /* USER CODE BEGIN 1 */
-
+void *_usb_malloc(size_t len)
+{
+	static char usbbuffer[sizeof (USBD_HID_HandleTypeDef)];
+	return usbbuffer;
+}
+void _usb_free(void *ptr)
+{
+}
 /* USER CODE END 1 */
 
 /*******************************************************************************
