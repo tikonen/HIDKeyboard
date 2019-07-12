@@ -94,7 +94,8 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-
+  // pulls USB D+ high on steval-mki109v3 board
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
