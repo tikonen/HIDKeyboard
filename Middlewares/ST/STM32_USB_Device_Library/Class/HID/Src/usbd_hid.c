@@ -146,7 +146,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIG
   0x01,         /*bConfigurationValue: Configuration value*/
   0x00,         /*iConfiguration: Index of string descriptor describing
   the configuration*/
-  0xE0,         /*bmAttributes: bus powered and Support Remote Wake-up */  // Apple 0xA0
+  0xA0,         /*bmAttributes: bus powered and Support Remote Wake-up */  // Apple 0xA0
   0x32,         /*MaxPower 100 mA: this current is used for detecting Vbus*/  // Apple 20ma
 
   /************** Descriptor of Keyboard interface ****************/
@@ -554,7 +554,7 @@ static uint8_t  USBD_HID_Setup (USBD_HandleTypeDef *pdev,
         // req->wIndex?
       if(req->wValue >> 8 == HID_REPORT_DESC)
       {
-    	if(LOBYTE(req->wIndex) == HID_EPIN1_ADDR) {
+    	if(LOBYTE(req->wIndex) == 0) {
           len = MIN(HID_KEYBOARD_REPORT_DESC_SIZE , req->wLength);
           pbuf = HID_Keyboard_ReportDesc;
     	} else {
@@ -564,7 +564,7 @@ static uint8_t  USBD_HID_Setup (USBD_HandleTypeDef *pdev,
       }
       else if(req->wValue >> 8 == HID_DESCRIPTOR_TYPE)
       {
-    	  if(LOBYTE(req->wIndex) == HID_EPIN1_ADDR) {
+    	  if(LOBYTE(req->wIndex) == 0) {
     		  pbuf = USBD_HID_Desc1;
     	  } else {
     		  pbuf = USBD_HID_Desc2;

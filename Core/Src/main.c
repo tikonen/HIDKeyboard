@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usb_device.h"
+#include "usbd_hid.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -59,7 +60,7 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void sendHIDReport(int keyCode, int status);
 /* USER CODE END 0 */
 
 /**
@@ -91,23 +92,51 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+
+  // pulls USB D+ high on steval-mki109v3 board
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+
   MX_USART2_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  // pulls USB D+ high on steval-mki109v3 board
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  // Button states
+  int button1 = 0;
+  int button2 = 0;
+
   while (1)
   {
 	  __WFI();
-    /* USER CODE END WHILE */
+
+	// check the buttons and send report
+	int b = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+	if(b != button1) {
+		button1 = b;
+		sendHIDReport(0x3A, b); // brightness down
+	} else {
+		b = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10);
+		if(b != button2) {
+			button2 = b;
+			sendHIDReport(0x3B, b); // brightness up
+		}
+	}
 
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
+}
+
+static uint8_t sHIDReportBuffer[8];
+void sendHIDReport(int keyCode, int status)
+{
+	extern USBD_HandleTypeDef hUsbDeviceFS;
+	sHIDReportBuffer[2] = status ? keyCode : 0;
+	USBD_HID_SendReport(&hUsbDeviceFS, sHIDReportBuffer, 8);
 }
 
 /**
@@ -192,11 +221,24 @@ static void MX_USART2_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
+  // Button #1 (SW1)
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  // Button #2 (SW2)
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 /* USER CODE BEGIN 4 */
