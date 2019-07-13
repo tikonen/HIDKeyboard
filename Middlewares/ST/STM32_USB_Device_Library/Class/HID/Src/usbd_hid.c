@@ -142,7 +142,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[USB_HID_CONFIG_DESC_SIZ]  __ALIG
   USB_HID_CONFIG_DESC_SIZ,
   /* wTotalLength: Bytes returned */
   0x00,
-  0x02,         /*bNumInterfaces: 1 interface*/
+  0x02,         /*bNumInterfaces: 2 interfaces */
   0x01,         /*bConfigurationValue: Configuration value*/
   0x00,         /*iConfiguration: Index of string descriptor describing
   the configuration*/
@@ -360,6 +360,16 @@ __ALIGN_BEGIN static uint8_t USBD_HID_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_
   0x00,
 };
 
+/*
+// usbhid-dump
+001:003:000:DESCRIPTOR
+ 05 01 09 06 A1 01 05 07 19 E0 29 E7 15 00 25 01
+ 75 01 95 08 81 02 95 01 75 08 81 01 05 08 19 01
+ 29 05 95 05 75 01 91 02 95 01 75 03 91 01 05 07
+ 19 00 2A FF 00 95 05 75 08 15 00 26 FF 00 81 00
+ 05 FF 09 03 75 08 95 01 81 02 C0
+*/
+
 __ALIGN_BEGIN static uint8_t HID_Keyboard_ReportDesc[HID_KEYBOARD_REPORT_DESC_SIZE]  __ALIGN_END =
 {
 	HID_USAGE_PAGE(GenericDesktop),
@@ -401,6 +411,14 @@ __ALIGN_BEGIN static uint8_t HID_Keyboard_ReportDesc[HID_KEYBOARD_REPORT_DESC_SI
 	HID_END_COLLECTION()
 };
 
+/*
+usbhid-dump
+001:003:001:DESCRIPTOR
+ 05 0C 09 01 A1 01 05 0C 75 01 95 01 15 00 25 01
+ 09 CD 81 06 09 B5 81 02 09 B6 81 02 09 B8 81 06
+ 09 E2 81 06 09 EA 81 02 09 E9 81 02 81 01 C0
+
+*/
 __ALIGN_BEGIN static uint8_t HID_Media_ReportDesc[HID_MEDIA_KEYS_REPORT_DESC_SIZE]  __ALIGN_END =
 {
 	HID_USAGE_PAGE(0x0C), // Consumer
