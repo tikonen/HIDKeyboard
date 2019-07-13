@@ -113,6 +113,11 @@ int main(void)
   {
 	  __WFI();
 
+	// Only poll buttons if we can send a report, this way we don't miss very fast
+	// button presses where both press and release happens in the same hid poll
+	extern USBD_HandleTypeDef hUsbDeviceFS;
+	if(((USBD_HID_HandleTypeDef *)hUsbDeviceFS.pClassData)->state != HID_IDLE) continue;
+
 	// check the buttons and send report
 	int b = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
 	if(b != button1) {
@@ -131,12 +136,22 @@ int main(void)
   /* USER CODE END 3 */
 }
 
-static uint8_t sHIDReportBuffer[8];
+typedef union {
+    struct {
+	uint8_t meta; // control keys and modifiers flags
+	uint8_t reserved; // not used
+	uint8_t keys[5]; // keycodes
+	uint8_t vendor; // unknown
+    } f;
+    uint8_t data[8];
+} KeyboardReport_t;
+
+static KeyboardReport_t sHIDReport;
 void sendHIDReport(int keyCode, int status)
 {
 	extern USBD_HandleTypeDef hUsbDeviceFS;
-	sHIDReportBuffer[2] = status ? keyCode : 0;
-	USBD_HID_SendReport(&hUsbDeviceFS, sHIDReportBuffer, 8);
+	sHIDReport.f.keys[0] = status ? keyCode : 0;
+	USBD_HID_SendReport(&hUsbDeviceFS, sHIDReport.data, 8);
 }
 
 /**
